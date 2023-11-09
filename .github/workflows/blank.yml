@@ -31,12 +31,19 @@ jobs:
 
       - name: notification
         if: cancelled() == false
-        uses: xinthink/action-telegram@v1.1
+        uses: appleboy/telegram-action@master
         with:
-          botToken: ${{ secrets.BOTTOKEN }}
-          chatId: ${{ secrets.CHATID }}
-          jobStatus: ${{ job.status }}
+          to: ${{ secrets.CHATID }}
+          token: ${{ secrets.BOTTOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
+            
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
